@@ -72,4 +72,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'recipebudgetfinderapp67.firebasestorage.app',
     iosBundleId: 'com.deveraestrera.pesoPantry',
   );
+
 }
