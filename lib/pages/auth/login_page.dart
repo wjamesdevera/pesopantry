@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:peso_pantry/config/app_theme.dart';
 import 'package:peso_pantry/services/auth_service.dart';
@@ -33,10 +34,13 @@ class _LoginPageState extends State<LoginPage> {
 
     setState(() => _isLoading = true);
     try {
-      await AuthService.login(email: email, password: password);
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: email, password: password);
       if (mounted) {
         Navigator.of(context).pushReplacementNamed('/home');
       }
+    } on FirebaseAuthException catch (e) {
+      _showError(e.message.toString());
     } catch (e) {
       _showError(e.toString());
     } finally {

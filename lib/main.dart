@@ -6,6 +6,7 @@ import 'package:peso_pantry/pages/home/home_page.dart';
 import 'package:peso_pantry/pages/home/recipe_detail_page.dart';
 import 'package:peso_pantry/pages/home/budget_filter_page.dart';
 import 'package:peso_pantry/pages/user/profile_page.dart';
+import 'package:peso_pantry/pages/user/saved_recipe_page.dart';
 import 'package:peso_pantry/services/firebase_service.dart';
 
 void main() async {
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
         '/home': (context) => const HomePage(),
         '/budget-filter': (context) => const BudgetFilterPage(),
         '/profile': (context) => const ProfilePage(),
+        '/saved-recipe': (context) => const SavedRecipesPage()
       },
       onGenerateRoute: (settings) {
         if (settings.name == '/recipe-detail') {

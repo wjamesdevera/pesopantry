@@ -274,11 +274,7 @@ class _ProfilePageState extends State<ProfilePage> {
                            ),
                            ElevatedButton.icon(
                              onPressed: () {
-                               ScaffoldMessenger.of(context).showSnackBar(
-                                 const SnackBar(
-                                   content: Text('Navigate to saved recipes'),
-                                 ),
-                               );
+                               Navigator.of(context).pushReplacementNamed('/saved-recipe');
                              },
                              icon: const Icon(Icons.bookmark),
                              label: const Text('View'),
