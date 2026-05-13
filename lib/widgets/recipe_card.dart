@@ -135,7 +135,7 @@ class RecipeCard extends StatelessWidget {
                                 const SizedBox(width: 4),
                                 Expanded(
                                   child: Text(
-                                    '\$${recipe.costEstimate.toStringAsFixed(2)}',
+                                    '₱${recipe.costEstimate.toStringAsFixed(2)}',
                                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                       fontWeight: FontWeight.w600,
                                     ),

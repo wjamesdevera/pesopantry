@@ -13,9 +13,9 @@ class AppConstants {
   ];
 
   // Budget constraints
-  static const double minBudget = 5.0;
+  static const double minBudget = 99.0;
   static const double maxBudget = 999.0;
-  static const int budgetDivisions = 199;
+  static const int budgetDivisions = 180;
 
   // Error messages
   static const String genericError = 'An error occurred. Please try again.';

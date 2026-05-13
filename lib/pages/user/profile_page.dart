@@ -198,7 +198,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
-                            '\$${_currentBudget.toStringAsFixed(2)}',
+                            '₱${_currentBudget.toStringAsFixed(2)}',
                             style: Theme.of(context).textTheme.titleMedium
                                 ?.copyWith(
                               color: AppTheme.primary,

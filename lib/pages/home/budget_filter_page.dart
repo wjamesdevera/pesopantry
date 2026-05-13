@@ -12,7 +12,7 @@ class BudgetFilterPage extends StatefulWidget {
 }
 
 class _BudgetFilterPageState extends State<BudgetFilterPage> {
-  double _selectedBudget = 50.0;
+  double _selectedBudget = 99.0;
   List<Recipe> _filteredRecipes = [];
   bool _isLoading = false;
 
@@ -25,12 +25,15 @@ class _BudgetFilterPageState extends State<BudgetFilterPage> {
   Future<void> _filterByBudget() async {
     setState(() => _isLoading = true);
     try {
+      print('Filtering recipes by budget: ₱${_selectedBudget.toStringAsFixed(2)}...');
       final recipes = await FirebaseService.getRecipesByBudget(_selectedBudget);
+      print('Found ${recipes.length} recipes within budget');
       setState(() {
         _filteredRecipes = recipes;
         _isLoading = false;
       });
     } catch (e) {
+      print('Budget filter error: $e');
       setState(() => _isLoading = false);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error: $e')),
@@ -117,7 +120,7 @@ class _BudgetFilterPageState extends State<BudgetFilterPage> {
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              '\$${_selectedBudget.toStringAsFixed(2)}',
+                              '₱${_selectedBudget.toStringAsFixed(2)}',
                               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                                 color: AppTheme.secondary,
                               ),
@@ -137,9 +140,9 @@ class _BudgetFilterPageState extends State<BudgetFilterPage> {
                 // Slider
                 Slider(
                   value: _selectedBudget,
-                  min: 5,
+                  min: 99,
                   max: 999,
-                  divisions: 199,
+                  divisions: 180,
                   activeColor: Colors.white,
                   inactiveColor: Colors.white.withOpacity(0.3),
                   onChanged: _onBudgetChanged,
@@ -148,8 +151,8 @@ class _BudgetFilterPageState extends State<BudgetFilterPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('\$5', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.white)),
-                    Text('\$999', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.white)),
+                    Text('₱99', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.white)),
+                    Text('₱999', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.white)),
                   ],
                 ),
               ],

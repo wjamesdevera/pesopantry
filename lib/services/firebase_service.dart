@@ -8,50 +8,117 @@ class FirebaseService {
 
   // Initialize Firebase
   static Future<void> initialize() async {
-    await Firebase.initializeApp();
+    try {
+      print('🔥 Initializing Firebase...');
+      await Firebase.initializeApp();
+      print('✅ Firebase initialized successfully');
+
+      // Test Firestore connection
+      print('🧪 Testing Firestore connection...');
+      final testDoc = await FirebaseFirestore.instance
+          .collection('tbl_recipes')
+          .limit(1)
+          .get();
+      print('✅ Firestore connection successful - Found collections');
+
+    } catch (e) {
+      print('❌ Firebase initialization or Firestore connection error: $e');
+      print('   Make sure:');
+      print('   1. Firestore security rules allow read: if true;');
+      print('   2. Cloud Firestore API is enabled in Google Cloud Console');
+      print('   3. You are connected to the internet');
+      rethrow;
+    }
   }
 
   // ===== RECIPE OPERATIONS =====
+  // Fetch all recipes from tbl_recipes collection
   static Future<List<Recipe>> getAllRecipes() async {
     try {
+      print('📡 Fetching recipes from tbl_recipes...');
       final snapshot = await _firestore.collection('tbl_recipes').get();
-      return snapshot.docs.map((doc) => Recipe.fromJson(doc.data())).toList();
+      print('✅ Fetched ${snapshot.docs.length} recipe documents');
+
+      final recipes = snapshot.docs.map((doc) {
+        print('   - Recipe: ${doc.id}');
+        final data = doc.data();
+        return Recipe.fromJson(data, docId: doc.id);
+      }).toList();
+
+      return recipes;
     } catch (e) {
+      print('❌ Error fetching recipes: $e');
+      print('   Error type: ${e.runtimeType}');
       throw Exception('Error fetching recipes: $e');
     }
   }
 
+  // Get single recipe by ID
   static Future<Recipe> getRecipeById(String recipeId) async {
     try {
+      print('📡 Fetching recipe: "$recipeId"...');
+      print('   Recipe ID type: ${recipeId.runtimeType}');
+      print('   Recipe ID length: ${recipeId.length}');
+
+      if (recipeId.isEmpty) {
+        throw Exception('Recipe ID is empty');
+      }
+
       final doc = await _firestore.collection('tbl_recipes').doc(recipeId).get();
       if (doc.exists) {
-        return Recipe.fromJson(doc.data() as Map<String, dynamic>);
+        print('✅ Found recipe: $recipeId');
+        final data = doc.data() as Map<String, dynamic>;
+        return Recipe.fromJson(data, docId: doc.id);
       }
-      throw Exception('Recipe not found');
+
+      // If not found by ID, try searching by recipe_id field
+      print('⚠️  Document "$recipeId" not found, searching by recipe_id field...');
+      final snapshot = await _firestore
+          .collection('tbl_recipes')
+          .where('recipe_id', isEqualTo: recipeId)
+          .limit(1)
+          .get();
+
+      if (snapshot.docs.isNotEmpty) {
+        print('✅ Found recipe by recipe_id field');
+        final data = snapshot.docs.first.data();
+        return Recipe.fromJson(data, docId: snapshot.docs.first.id);
+      }
+
+      throw Exception('Recipe not found: $recipeId');
     } catch (e) {
+      print('❌ Error fetching recipe: $e');
       throw Exception('Error fetching recipe: $e');
     }
   }
 
+  // Get recipes filtered by category (vegetarian, non-vegetarian, dessert)
   static Future<List<Recipe>> getRecipesByCategory(String category) async {
     try {
       final snapshot = await _firestore
           .collection('tbl_recipes')
           .where('category', isEqualTo: category)
           .get();
-      return snapshot.docs.map((doc) => Recipe.fromJson(doc.data())).toList();
+      return snapshot.docs.map((doc) {
+        final data = doc.data();
+        return Recipe.fromJson(data, docId: doc.id);
+      }).toList();
     } catch (e) {
       throw Exception('Error fetching recipes by category: $e');
     }
   }
 
+  // Get recipes within budget threshold
   static Future<List<Recipe>> getRecipesByBudget(double maxCost) async {
     try {
       final snapshot = await _firestore
           .collection('tbl_recipes')
           .where('cost_estimate', isLessThanOrEqualTo: maxCost)
           .get();
-      return snapshot.docs.map((doc) => Recipe.fromJson(doc.data())).toList();
+      return snapshot.docs.map((doc) {
+        final data = doc.data();
+        return Recipe.fromJson(data, docId: doc.id);
+      }).toList();
     } catch (e) {
       throw Exception('Error fetching recipes by budget: $e');
     }
@@ -115,6 +182,7 @@ class FirebaseService {
     }
   }
 
+  // Get user's saved recipes
   static Future<List<Recipe>> getUserSavedRecipes(String userId) async {
     try {
       final user = await getUserById(userId);
@@ -124,7 +192,11 @@ class FirebaseService {
           .collection('tbl_recipes')
           .where(FieldPath.documentId, whereIn: user.savedRecipes)
           .get();
-      return snapshot.docs.map((doc) => Recipe.fromJson(doc.data())).toList();
+
+      return snapshot.docs.map((doc) {
+        final data = doc.data();
+        return Recipe.fromJson(data, docId: doc.id);
+      }).toList();
     } catch (e) {
       throw Exception('Error fetching saved recipes: $e');
     }

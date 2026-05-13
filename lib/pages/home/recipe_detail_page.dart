@@ -21,6 +21,8 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
   @override
   void initState() {
     super.initState();
+    print('   RecipeDetailPage - Recipe ID: "${widget.recipeId}"');
+    print('   Recipe ID length: ${widget.recipeId.length}');
     _recipeFuture = FirebaseService.getRecipeById(widget.recipeId);
     _checkIfSaved();
   }
@@ -165,7 +167,7 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                           _buildInfoCard(
                             icon: Icons.attach_money,
                             label: 'Cost Estimate',
-                            value: '\$${recipe.costEstimate.toStringAsFixed(2)}',
+                            value: '₱${recipe.costEstimate.toStringAsFixed(2)}',
                             context: context,
                           ),
                         ],
