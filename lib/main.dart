@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       title: 'PesoPantry',
       theme: AppTheme.lightTheme(),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/home',
+      initialRoute: '/login',
       routes: {
         '/login': (context) => const LoginPage(),
         '/register': (context) => const RegisterPage(),
