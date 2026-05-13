@@ -114,89 +114,67 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // User avatar section
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    AppTheme.primary.withOpacity(0.1),
-                    AppTheme.accent.withOpacity(0.1),
-                  ],
-                ),
-                borderRadius: BorderRadius.circular(16),
+      body: Column(
+        children: [
+          // Full-width banner header
+          Image.asset(
+            'peso_pantry_banner.png',
+            height: 140,
+            width: double.infinity,
+            fit: BoxFit.cover,
+          ),
+          // User email overlay
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            color: Colors.white,
+            child: Text(
+              _userEmail,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
               ),
+            ),
+          ),
+          // Main scrollable content
+          Expanded(
+            child: SingleChildScrollView(
               padding: const EdgeInsets.all(24),
-              child: Center(
-                child: Column(
-                  children: [
-                    // Logo
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppTheme.primary.withOpacity(0.2),
-                            blurRadius: 12,
-                            spreadRadius: 4,
-                          ),
-                        ],
-                      ),
-                      child: Image.asset(
-                        'pesopantry_logo.png',
-                        height: 80,
-                        width: 80,
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      _userEmail,
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 48),
-            // Budget section
-            Text(
-              'Budget Settings',
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            const SizedBox(height: 16),
-            Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Monthly Budget',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppTheme.primary.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                 children: [
+                   const SizedBox(height: 24),
+                   // Budget section
+                   Text(
+                     'Budget Settings',
+                     style: Theme.of(context).textTheme.headlineSmall,
+                   ),
+                   const SizedBox(height: 16),
+                   Card(
+                     elevation: 4,
+                     shape: RoundedRectangleBorder(
+                       borderRadius: BorderRadius.circular(16),
+                     ),
+                     child: Padding(
+                       padding: const EdgeInsets.all(20),
+                       child: Column(
+                         crossAxisAlignment: CrossAxisAlignment.start,
+                         children: [
+                           Row(
+                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                             children: [
+                               Text(
+                                 'Monthly Budget',
+                                 style: Theme.of(context).textTheme.bodyMedium,
+                               ),
+                               Container(
+                                 padding: const EdgeInsets.symmetric(
+                                   horizontal: 16,
+                                   vertical: 8,
+                                 ),
+                                 decoration: BoxDecoration(
+                                   color: AppTheme.primary.withOpacity(0.1),
+                                   borderRadius: BorderRadius.circular(8),
+                                 ),
                           child: Text(
                             '₱${_currentBudget.toStringAsFixed(2)}',
                             style: Theme.of(context).textTheme.titleMedium
@@ -258,79 +236,82 @@ class _ProfilePageState extends State<ProfilePage> {
                           label: const Text('Edit Budget'),
                         ),
                       ),
+                   ],
+                 ),
+               ),
+             ),
+                   const SizedBox(height: 32),
+                   // Saved recipes section
+                   Text(
+                     'Saved Recipes',
+                     style: Theme.of(context).textTheme.headlineSmall,
+                   ),
+                   const SizedBox(height: 16),
+                   Card(
+                     elevation: 4,
+                     shape: RoundedRectangleBorder(
+                       borderRadius: BorderRadius.circular(16),
+                     ),
+                     child: Padding(
+                       padding: const EdgeInsets.all(20),
+                       child: Row(
+                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                         children: [
+                           Column(
+                             crossAxisAlignment: CrossAxisAlignment.start,
+                             children: [
+                               Text(
+                                 'Your Saved Recipes',
+                                 style: Theme.of(context).textTheme.bodyMedium,
+                               ),
+                               const SizedBox(height: 4),
+                               Text(
+                                 '0 saved',
+                                 style: Theme.of(context).textTheme.bodySmall
+                                     ?.copyWith(color: AppTheme.textSecondary),
+                               ),
+                             ],
+                           ),
+                           ElevatedButton.icon(
+                             onPressed: () {
+                               ScaffoldMessenger.of(context).showSnackBar(
+                                 const SnackBar(
+                                   content: Text('Navigate to saved recipes'),
+                                 ),
+                               );
+                             },
+                             icon: const Icon(Icons.bookmark),
+                             label: const Text('View'),
+                           ),
+                         ],
+                       ),
+                     ),
+                   ),
+                   const SizedBox(height: 32),
+                   // Account section
+                   Text(
+                     'Account',
+                     style: Theme.of(context).textTheme.headlineSmall,
+                   ),
+                   const SizedBox(height: 16),
+                   OutlinedButton.icon(
+                     onPressed: () {
+                       ScaffoldMessenger.of(context).showSnackBar(
+                         const SnackBar(content: Text('Change password feature')),
+                       );
+                     },
+                     icon: const Icon(Icons.lock),
+                     label: const Text('Change Password'),
+                    ),
                   ],
                 ),
               ),
-            ),
-            const SizedBox(height: 32),
-            // Saved recipes section
-            Text(
-              'Saved Recipes',
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            const SizedBox(height: 16),
-            Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Your Saved Recipes',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          '0 saved',
-                          style: Theme.of(context).textTheme.bodySmall
-                              ?.copyWith(color: AppTheme.textSecondary),
-                        ),
-                      ],
-                    ),
-                    ElevatedButton.icon(
-                      onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Navigate to saved recipes'),
-                          ),
-                        );
-                      },
-                      icon: const Icon(Icons.bookmark),
-                      label: const Text('View'),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 32),
-            // Account section
-            Text(
-              'Account',
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            const SizedBox(height: 16),
-            OutlinedButton.icon(
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Change password feature')),
-                );
-              },
-              icon: const Icon(Icons.lock),
-              label: const Text('Change Password'),
             ),
           ],
         ),
-      ),
-    );
+      );
+    }
   }
-}
 
 
 
