@@ -34,8 +34,7 @@ class _LoginPageState extends State<LoginPage> {
 
     setState(() => _isLoading = true);
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: email, password: password);
+      await AuthService.login(email: email, password: password);
       if (mounted) {
         Navigator.of(context).pushReplacementNamed('/home');
       }

@@ -49,8 +49,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
     setState(() => _isLoading = true);
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: email, password: password);
+      await AuthService.register(email: email, password: password);
+
       if (mounted) {
         Navigator.of(context).pushReplacementNamed('/home');
       }
