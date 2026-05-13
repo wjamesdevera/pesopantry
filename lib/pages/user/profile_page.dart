@@ -283,23 +283,7 @@ class _ProfilePageState extends State<ProfilePage> {
                        ),
                      ),
                    ),
-                   const SizedBox(height: 32),
-                   // Account section
-                   Text(
-                     'Account',
-                     style: Theme.of(context).textTheme.headlineSmall,
-                   ),
-                   const SizedBox(height: 16),
-                   OutlinedButton.icon(
-                     onPressed: () {
-                       ScaffoldMessenger.of(context).showSnackBar(
-                         const SnackBar(content: Text('Change password feature')),
-                       );
-                     },
-                     icon: const Icon(Icons.lock),
-                     label: const Text('Change Password'),
-                    ),
-                  ],
+                   ],
                 ),
               ),
             ),
