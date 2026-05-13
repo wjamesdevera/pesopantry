@@ -49,7 +49,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
     setState(() => _isLoading = true);
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: email, password: password);
       if (mounted) {
         Navigator.of(context).pushReplacementNamed('/home');
